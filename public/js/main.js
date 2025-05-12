@@ -14,6 +14,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  function debugLog(message, data) {
+    console.log(`DEBUG: ${message}`, data);
+    if (!document.getElementById('debug-info')) {
+      const debugDiv = document.createElement('div');
+      debugDiv.id = 'debug-info';
+      debugDiv.style.display = 'none';
+      debugDiv.innerHTML = '<h3>Debug Information</h3><pre id="debug-log"></pre>';
+      debugDiv.style.padding = '10px';
+      debugDiv.style.margin = '10px 0';
+      debugDiv.style.backgroundColor = '#f8f8f8';
+      debugDiv.style.border = '1px solid #ddd';
+      debugDiv.style.borderRadius = '4px';
+      
+      const toggleButton = document.createElement('button');
+      toggleButton.textContent = 'Show Debug Info';
+      toggleButton.className = 'btn btn-sm btn-secondary mt-3';
+      toggleButton.onclick = function() {
+        const content = document.getElementById('debug-info');
+        if (content.style.display === 'none') {
+          content.style.display = 'block';
+          this.textContent = 'Hide Debug Info';
+        } else {
+          content.style.display = 'none';
+          this.textContent = 'Show Debug Info';
+        }
+      };
+      
+      document.querySelector('.container').appendChild(toggleButton);
+      document.querySelector('.container').appendChild(debugDiv);
+    }
+    
+    const debugLog = document.getElementById('debug-log');
+    debugLog.innerHTML += `${message}\n${data ? JSON.stringify(data, null, 2) : ''}\n\n`;
+  }
+
   async function handleGenerate() {
     const videoUrl = videoUrlInput.value.trim();
     
@@ -25,8 +60,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Reset UI
     resetUI();
     showLoading(true);
+    debugLog('Starting request for URL', videoUrl);
 
     try {
+      debugLog('Sending fetch request to /generate');
       const response = await fetch('/generate', {
         method: 'POST',
         headers: {
@@ -35,15 +72,26 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify({ videoUrl }),
       });
 
+      debugLog('Response received', {
+        status: response.status,
+        statusText: response.statusText,
+        headers: Object.fromEntries([...response.headers])
+      });
+
       const data = await response.json();
+      debugLog('Response data', data);
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to generate content');
+        throw new Error(data.error || data.message || 'Failed to generate content');
       }
 
       displayResults(data);
     } catch (error) {
-      showError(error.message);
+      debugLog('Error in handleGenerate', {
+        message: error.message,
+        stack: error.stack
+      });
+      showError(`Error: ${error.message}`);
     } finally {
       showLoading(false);
     }
