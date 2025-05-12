@@ -1,0 +1,42 @@
+body {
+  background-color: #f8f9fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card-header {
+  font-weight: 600;
+}
+
+.btn-primary {
+  background-color: #4285F4;
+  border-color: #4285F4;
+}
+
+.btn-primary:hover {
+  background-color: #3367D6;
+  border-color: #3367D6;
+}
+
+#timestampList .list-group-item {
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#timestampList .list-group-item:hover {
+  background-color: #f0f0f0;
+}
+
+.timestamp-time {
+  font-weight: bold;
+  color: #4285F4;
+  margin-right: 10px;
+}
+
+#summaryContent {
+  line-height: 1.6;
+} 

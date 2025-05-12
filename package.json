@@ -1,0 +1,27 @@
+{
+  "name": "youtube-timestamp-generator",
+  "version": "1.0.0",
+  "description": "Generate timestamps and summaries from YouTube videos using Gemini AI",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "build": "echo 'Build step not required'"
+  },
+  "engines": {
+    "node": ">=16.x"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.1.3",
+    "axios": "^1.6.2",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "youtube-transcript": "^1.0.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
